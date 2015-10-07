@@ -162,8 +162,11 @@ class UploadBehavior extends Behavior
                 }
                 $model->setAttribute($this->attribute, $this->_file->name);
             } else {
-                // Protect attribute
-                unset($model->{$this->attribute});
+                $attribute = $this->attribute;
+                // Protect attribute if the attribute has not been set to null
+                if (!is_null($model->$attribute)) {
+                    unset($model->{$this->attribute});
+                }
             }
         } else {
             if (!$model->getIsNewRecord() && $model->isAttributeChanged($this->attribute)) {
